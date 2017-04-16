@@ -800,5 +800,11 @@ static int camera_get_camera_info(int camera_id, struct camera_info *info)
     ALOGV("%s", __FUNCTION__);
     if (check_vendor_module())
         return 0;
-    return gVendorModule->get_camera_info(camera_id, info);
+    int ret = gVendorModule->get_camera_info(camera_id, info);
+#ifdef CAMERA_SENSOR_ORIENTETION_REVERSE
+    if (camera_id == CAMERA_FACING_BACK) {
+        info->orientation = 270;
+    }
+#endif
+    return ret;
 }
